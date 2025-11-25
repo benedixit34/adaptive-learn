@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 
-from app.courses.permissions import CanAccessLesson, CanEnroll
+from app.courses.permissions import CanAccessLesson
 
 
 from .models import (
@@ -125,4 +125,3 @@ class LessonViewSet(viewsets.ModelViewSet):
         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
         serializer = UserLessonCompletionSerializer(user_completion)
         return Response(serializer.data, status=status_code)
-

@@ -12,11 +12,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{API_PREFIX}users/", include("app.accounts.urls")),
     path(f"{API_PREFIX}auth/", include("app.auth.urls")),
-    path(f"{API_PREFIX}", include("app.support.urls")),
     path(f"{API_PREFIX}", include("app.courses.urls")),
-    ## documentation related endpoints
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    # Optional UI:
+    
     path(
         "api/docs",
         SpectacularSwaggerView.as_view(url_name="schema"),

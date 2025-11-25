@@ -7,7 +7,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from app.auth.models import Verification
-from app.courses.utils import has_subscription
 
 
 
@@ -21,7 +20,6 @@ from .serializers import (
 User = get_user_model()
 
 
-# Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     lookup_field = "uuid"
@@ -38,13 +36,13 @@ class UserViewSet(viewsets.ModelViewSet):
             verification.save()
 
             email_content = (
-                f"Welcome to AE Learning \n"
+                f"Welcome to re:Learn \n"
                 f"Here is your verification code: {raw_code}.\n"
                 f"Kindly complete your registration and dive into our world of innovative learning experience."
             )
             try:
                 send_mail(
-                    "Welcome to AE Learning",
+                    "Welcome to re:Learn",
                     email_content,
                     "learn@afroeuropean.uk",
                     [user.email],
@@ -73,15 +71,6 @@ class UserViewSet(viewsets.ModelViewSet):
         # If validation fails, return the errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-        
-    @action(detail=True, methods=["get"], url_path="subscribed")
-    def subscribed(self, request, uuid=None):
-        user = self.get_object()
-        is_subscribed = has_subscription(user)
-        return Response({"is_subscribed": is_subscribed}, status=status.HTTP_200_OK)
-
-        
     def get_permissions(self):
         if self.request.method == "POST":
             self.permission_classes = [AllowAny]

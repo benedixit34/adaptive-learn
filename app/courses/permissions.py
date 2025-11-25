@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework.permissions import BasePermission
-from app.courses.utils import lesson_permission, get_completed_level
-from app.courses.models import SpecialCourseBundle, CourseBundleChoice
+from app.courses.utils import lesson_permission
 
 
 class CanAccessLesson(BasePermission):

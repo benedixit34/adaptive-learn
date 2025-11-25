@@ -1,9 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth import get_user_model
-from app.accounts.models import Instructor
 from app.general.models import CreatedUpdated
-from drf_stripe.models import Product
 
 User = get_user_model()
 
@@ -12,7 +10,7 @@ class Course(CreatedUpdated):
     name = models.CharField(max_length=100)
     description = models.TextField()
     language = models.CharField(max_length=50)
-    instructors = models.ManyToManyField(Instructor, related_name="courses")
+    instructors = models.ManyToManyField(User, related_name="courses")
 
     def __str__(self):
         return self.name

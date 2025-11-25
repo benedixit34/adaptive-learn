@@ -2,16 +2,12 @@ from cloudinary_storage.validators import validate_video
 from rest_framework import serializers
 
 
-from .models import Course, Lesson, UserLessonCompletion, UserCourseProgress
+from .models import Course, Lesson, UserLessonCompletion
 
 class CourseWriteSerializer(serializers.ModelSerializer):
-    instructors = serializers.PrimaryKeyRelatedField(
-        queryset=Instructor.objects.all(), many=True
-    )
-
     class Meta:
         model = Course
-        fields = ["name", "description", "language", "instructors"]
+        fields = ["name", "description", "language"]
 
     def create(self, validated_data):
         instructors = validated_data.pop("instructors", [])
@@ -21,8 +17,6 @@ class CourseWriteSerializer(serializers.ModelSerializer):
 
 
 class CourseReadSerializer(serializers.ModelSerializer):
-    instructors = InstructorReadSerializer(many=True)
-
     class Meta:
         model = Course
         fields = [
@@ -58,10 +52,6 @@ class LessonWriteSerializer(serializers.ModelSerializer):
         return lesson
 
 
-class VideoReadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Video
-        fields = ["uuid", "name", "description", "video", "featured_image"]
 
 
 class LessonRetrieveReadSerializer(serializers.ModelSerializer):

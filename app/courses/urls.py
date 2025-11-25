@@ -2,7 +2,6 @@ from django.urls import include, path
 from rest_framework_nested import routers
 
 from .views import (
-    CourseBundleViewset,
     CourseViewSet,
     LessonViewSet,
 )
@@ -10,7 +9,6 @@ from .views import (
 # Main routers
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r"courses", CourseViewSet, basename="courses")
-router.register(r"course-bundles", CourseBundleViewset, basename="course-bundles")
 
 # Nested routers for courses -> lessons (with section_id in URL, but not a SectionViewSet)
 courses_router = routers.NestedSimpleRouter(router, r"courses", lookup="course")

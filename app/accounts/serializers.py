@@ -3,20 +3,17 @@ from django.contrib.auth.password_validation import validate_password
 
 from rest_framework import serializers
 
-from .models import Instructor
-
 User = get_user_model()
 
 
 class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("uuid", "first_name", "last_name", "email", "referral_code")
+        fields = ("uuid", "first_name", "last_name", "email", "course", "profile_picture", "role")
 
 
 class UserWriteSerializer(serializers.ModelSerializer):
     password = serializers.CharField(validators=[validate_password], write_only=True)
-    referral_code = serializers.CharField(required=False)
 
     class Meta:
         model = User
@@ -26,31 +23,6 @@ class UserWriteSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("User already exists")
         return value
-
-
-    def validate(self, attrs):
-        referral_code = attrs.get("referral_code")
-        if referral_code:
-            if not User.objects.filter(referral_code=referral_code):
-                raise serializers.ValidationError("Invalid Referal Code")
-        return attrs
-
-        
-    def create(self, validated_data):
-        validated_data.pop("referral_code", None)
-        return User.objects.create_user(**validated_data)
-
-
-class InstructorReadSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(source="user.email", read_only=True)
-    full_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Instructor
-        fields = ("email", "full_name", "profile_picture")
-    
-    def get_full_name(self, obj):
-        return f"{obj.user.first_name} {obj.user.last_name}".strip()
 
 
 class ChangePasswordSerializer(serializers.Serializer):

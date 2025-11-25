@@ -76,13 +76,11 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "whitenoise",
     "corsheaders",
-    "drf_stripe",
     "django_crontab",
     # local apps
     "app.accounts",
     "app.auth",
     "app.courses",
-    "app.support",
 ]
 
 DRF_STRIPE = {
